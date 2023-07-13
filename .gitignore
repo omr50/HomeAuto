@@ -14,8 +14,8 @@
 /MobileHomeAuto/.cxx
 /MobileHomeAuto/local.properties
 
-/backend/venv
-/backend/videos
+/FrameAnalysisServer/venv
+/FrameAnalysisServer/videos
 
 /HLS_Server/node_modules
 /HLS_Server/.env
