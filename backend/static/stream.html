@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>HLS Stream</title>
+  </head>
+  <body>
+    <video id="video-player" controls></video>
+    <script src="{{ url_for('static', filename='hls.min.js') }}"></script>
+    <script>
+      var video = document.getElementById("video-player");
+      if (Hls.isSupported()) {
+        var hls = new Hls();
+        hls.loadSource("http://localhost:5000/stream");
+        hls.attachMedia(video);
+        hls.on(Hls.Events.MANIFEST_PARSED, function () {
+          video.play();
+        });
+      }
+    </script>
+  </body>
+</html>
