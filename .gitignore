@@ -21,3 +21,22 @@
 /HLS_Server/.env
 /HLS_Server/videos/ipcam/*
 /HLS_Server/tsconfig.json
+
+
+/AndroidApp/node_modules/
+/AndroidApp/.expo/
+/AndroidApp/dist/
+/AndroidApp/npm-debug.*
+/AndroidApp/*.jks
+/AndroidApp/*.p8
+/AndroidApp/*.p12
+/AndroidApp/*.key
+/AndroidApp/*.mobileprovision
+/AndroidApp/*.orig.*
+/AndroidApp/web-build/
+
+# macOS
+/AndroidApp/.DS_Store
+
+# Temporary files created by Metro to check the health of the file watcher
+/AndroidApp/.metro-health-check*
