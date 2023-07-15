@@ -2,7 +2,7 @@ const app = require('express')();
 const fs = require('fs');
 const hls = require('hls-server');
 const cors = require('cors');
-
+const path = require('path')
 // clear all old .ts files
 // and re-create .m3u8 file.
 require('./startup')
@@ -23,10 +23,14 @@ const server = app.listen(3000);
 
 const findRemoveSync = require('find-remove')
 
-// setInterval(() => {
-//     var result = findRemoveSync('./videos/ipcam', { age: { seconds: 8 }, extensions: '.ts' });
-//     console.log(result);
-// }, 8000);
+const VideoFilePath = './videos/ipcam';
+const m3u8FilePath = './videos/ipcam/index.m3u8';
+
+setInterval(()=> {
+    var result = findRemoveSync('./videos/ipcam', { age: { seconds: 15 }, extensions: '.ts' });
+}, 15000)
+
+
 
 
 new hls(server, {

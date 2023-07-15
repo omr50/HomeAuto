@@ -15,9 +15,10 @@ ffmpeg(rtspUrl, { timeout: 432000 })
     '-level 3.0',
     '-start_number 0',
     '-hls_time 5',
-    '-hls_list_size 0',
+    '-hls_list_size 2',
     '-g 5', // Set keyframe interval to 5 (adjust this value as needed)
     '-f hls',
+    '-hls_flags append_list+omit_endlist',
   ])
   .output(hlsOutputPath)
   .on('end', () => {
