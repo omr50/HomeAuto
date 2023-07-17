@@ -12,7 +12,7 @@ export default function App() {
   // REMEMBER TO ADD A BUTTON TO REFRESH STREAM INCASE YOUR OUT SIDE AND THE STREAM ISNT WORKING.
   return (
     <View>
-      <Text>Open up App.js to start working on your app!</Text>
+      <Text>Camera 1 "Later change to User defined Cam Name"</Text>
 
       <Video
           key={videoKey} // Adding key to force refresh
@@ -27,6 +27,10 @@ export default function App() {
       />
 
       <Button title='Refresh Stream' onPress={handleClick}></Button>
+
+      {/* implement record later. (Possibly record to hdd, but seperate power from data pin
+          so that raspberry pi can handle it.)  */}
+      <Button title='Record'></Button>
 
       <StatusBar style="auto" />
     </View>
