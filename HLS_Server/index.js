@@ -5,13 +5,17 @@ const cors = require('cors');
 const path = require('path')
 const mqtt = require('mqtt')
 
+const dotenv = require('dotenv');
+
+dotenv.config();
+
 const options = {
-    username: "ynfhrqut:ynfhrqut",
-    password: "CTO86ortUE2z3_5G7HXdbh0YQ-sdHGVH",
-    port: 1883
+    username: process.env.MQTT_USERNAME,
+    password: process.env.MQTT_PASSWORD,
+    port: process.env.MQTT_PORT
   };
 
-const client  = mqtt.connect("mqtt://toad.rmq.cloudamqp.com", options)
+const client  = mqtt.connect(process.env.MQTT_URL, options)
 // clear all old .ts files
 // and re-create .m3u8 file.
 require('./startup')
@@ -29,17 +33,12 @@ app.get('/', (req, res) => {
 });
 
 
-app.get('/light-on', (req, res) => {
+app.get('/lights', (req, res) => {
     // Publish 'ON' message to the MQTT broker when '/light-on' is accessed
-    client.publish('/home/light', 'ON');
-    res.send('Light is turned on!');
+    client.publish('/home/light', 'LIGHTS');
+    res.send('Light is switched!');
   });
 
-app.get('/light-off', (req, res) => {
-    // Publish 'OFF' message to the MQTT broker when '/light-off' is accessed
-    client.publish('/home/light', 'OFF');
-    res.send('Light is turned off!');
-});
 
 const server = app.listen(3000);
 
