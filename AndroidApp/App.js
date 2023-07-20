@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { Video } from 'expo-av';
-import { StatusBar, Text, View, Button, Dimensions } from 'react-native';
+import { StatusBar, Text, View, Button, Dimensions, Platform, Modal } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
 import * as ScreenOrientation from 'expo-screen-orientation';
 // import {ScreenOrientation} from 'expo-screen-orientation'
 
@@ -9,7 +10,17 @@ export default function App() {
   const [videoKey, setVideoKey] = useState(0); // To force refresh Video component
   const [lightStatus, setLightStatus] = useState('on');
 
-  
+  const [date, setDate] = useState(new Date());
+  const [show, setShow] = useState(false);
+
+  const hours = [...Array(24).keys()];
+  const minutes = [...Array(60).keys()];
+
+  const handleConfirm = (date) => {
+    console.warn("A date has been picked: ", date);
+    hideDatePicker();
+  };
+
   function setOrientation() {
     if (Dimensions.get('window').height > Dimensions.get('window').width) {
       //Device is in portrait mode, rotate to landscape mode.
@@ -28,7 +39,7 @@ export default function App() {
   const handleLights = () => {
     fetch(`http://192.168.0.16:3000/lights`)
     .then((result)=> {
-      console.log(success)
+      console.log("success")
       // change the lights (how to know if they were really turned on.)
     })
     .catch((error)=> {
@@ -62,6 +73,30 @@ export default function App() {
           <Button title='Lights' onPress={handleLights}></Button>
           
           <Button title='Record'></Button>
+
+
+          <Button title="Show Picker" onPress={() => setShow(true)} />
+      <Modal visible={show} onRequestClose={() => setShow(false)}>
+        <Picker
+          selectedValue={date.getHours()}
+          onValueChange={(itemValue, itemIndex) =>
+            setDate(new Date(date.setHours(itemValue)))
+          }>
+          {hours.map((value, index) => (
+            <Picker.Item key={index} label={value.toString()} value={value} />
+          ))}
+        </Picker>
+        <Picker
+          selectedValue={date.getMinutes()}
+          onValueChange={(itemValue, itemIndex) =>
+            setDate(new Date(date.setMinutes(itemValue)))
+          }>
+          {minutes.map((value, index) => (
+            <Picker.Item key={index} label={value.toString()} value={value} />
+          ))}
+        </Picker>
+        <Button title="Done" onPress={() => setShow(false)} />
+      </Modal>
 
       <StatusBar style="auto" />
     </View>
