@@ -48,7 +48,7 @@ const VideoFilePath = './videos/ipcam';
 const m3u8FilePath = './videos/ipcam/index.m3u8';
 
 setInterval(()=> {
-    var result = findRemoveSync('./videos/ipcam', { age: { seconds: 15 }, extensions: '.ts' });
+    var result = findRemoveSync('./videos/ipcam', { age: { seconds: 20 }, extensions: '.ts' });
 }, 15000)
 
 

@@ -16,6 +16,10 @@
 
 /FrameAnalysisServer/venv
 /FrameAnalysisServer/videos
+/FrameAnalysisServer/coco.names
+/FrameAnalysisServer/yolov4.cfg
+/FrameAnalysisServer/yolov4.weights
+/FrameAnalysisServer/pictures/*
 
 /HLS_Server/node_modules
 /HLS_Server/.env
