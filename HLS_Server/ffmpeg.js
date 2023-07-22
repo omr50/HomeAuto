@@ -14,11 +14,13 @@ ffmpeg(rtspUrl, { timeout: 432000 })
     '-profile:v baseline',
     '-level 3.0',
     '-start_number 0',
-    '-hls_time 5',
+    '-hls_time 1', // Reduced segment time
     '-hls_list_size 2',
-    '-g 5', // Set keyframe interval to 5 (adjust this value as needed)
+    '-g 15', // Adjust this based on your video's frame rate
     '-f hls',
     '-hls_flags append_list+omit_endlist',
+    '-preset ultrafast', // Fastest encoding
+    '-tune zerolatency' // Optimize for low latency
   ])
   .output(hlsOutputPath)
   .on('end', () => {

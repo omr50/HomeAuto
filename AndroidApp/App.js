@@ -16,6 +16,17 @@ export default function App() {
   const hours = [...Array(24).keys()];
   const minutes = [...Array(60).keys()];
 
+  const handleCam = (direction) => {
+    fetch(`http://192.168.0.16:3000/move-${direction}`)
+    .then((result)=> {
+      console.log("successfully moved " + direction)
+      // change the lights (how to know if they were really turned on.)
+    })
+    .catch((error)=> {
+      console.log(error)
+    })
+  } 
+
   const handleConfirm = (date) => {
     console.warn("A date has been picked: ", date);
     hideDatePicker();
@@ -71,9 +82,16 @@ export default function App() {
       {/* implement record later. (Possibly record to hdd, but seperate power from data pin
           so that raspberry pi can handle it.)  */}
           <Button title='Lights' onPress={handleLights}></Button>
-          
-          <Button title='Record'></Button>
+          <View style={{marginBottom: 50}} />
 
+          <Button title='Record'></Button>
+          <View style={{marginBottom: 50}} />
+
+          <Button title='Move Cam Left' onPress={()=>{handleCam('left')}}></Button>
+          <View style={{marginBottom: 50}} />
+
+          <Button title='Move Cam Right' onPress={()=>{handleCam('right')}}></Button>
+          <View style={{marginBottom: 50}} />
 
           <Button title="Show Picker" onPress={() => setShow(true)} />
       <Modal visible={show} onRequestClose={() => setShow(false)}>
