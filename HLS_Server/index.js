@@ -28,7 +28,8 @@ let zoomOut = ()=>{};
 
   device.init().then((info) => {
     console.log(info);
-  
+    
+    // these are in x direction only (LEFT AND RIGHT)
     let paramsLeft = {
       'ProfileToken': 'Profile_token1', 
       'Velocity': { // PTZ velocity. x, y, and zoom values must be between -1 and 1.
@@ -51,6 +52,30 @@ let zoomOut = ()=>{};
         'Timeout':3 // time duration the move should continue
       };
   
+    // these are in x direction only (LEFT AND RIGHT)
+    let paramsUp = {
+      'ProfileToken': 'Profile_token1', 
+      'Velocity': { // PTZ velocity. x, y, and zoom values must be between -1 and 1.
+        'x': 0.0, // Pan speed
+        'y': 1.0, // Tilt speed
+        'z': 0.0, 
+        'zoom': 0.0 // Zoom speed
+      },
+      'Timeout':3 // time duration the move should continue
+    };
+
+    let paramsDown = {
+        'ProfileToken': 'Profile_token1', 
+        'Velocity': { // PTZ velocity. x, y, and zoom values must be between -1 and 1.
+          'x': 0.0, // Pan speed
+          'y': -1.0, // Tilt speed
+          'z': 0.0, 
+          'zoom': 0.0 // Zoom speed
+        },
+        'Timeout':3 // time duration the move should continue
+      };
+
+
       let zoom_in = {
         'ProfileToken': 'Profile_token1', 
         'Velocity': { // PTZ velocity. x, y, and zoom values must be between -1 and 1.
