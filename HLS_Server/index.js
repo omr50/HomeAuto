@@ -16,6 +16,11 @@ dotenv.config();
 // hls server in its own folder.
 // light controls in its own folder.
 
+// make zoom and movements less choppy
+// if there is a way to make it small 
+// increments but also don't send too
+// much requests to avoid socket disconnect.
+
 
 let device = new onvif.OnvifDevice({
     xaddr: 'http://192.168.0.13:8899/onvif/device_service', // Replace with your camera's ONVIF address
