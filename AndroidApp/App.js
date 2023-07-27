@@ -1,6 +1,6 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Video } from 'expo-av';
-import { StatusBar, Text, View, Button, Dimensions, Platform, Modal } from 'react-native';
+import { StatusBar, Text, View, Button, Dimensions, Platform, Modal, FlatList, Image } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import * as ScreenOrientation from 'expo-screen-orientation';
 // import {ScreenOrientation} from 'expo-screen-orientation'
@@ -15,6 +15,27 @@ export default function App() {
 
   const hours = [...Array(24).keys()];
   const minutes = [...Array(60).keys()];
+
+  const [images, setImages] = useState([]);
+  const [start, setStart] = useState(0);
+
+  const getImages = async () => {
+    try {
+    const response = await fetch(`http://192.168.0.16:5000/get-images/0/2`);
+    const images = await response.json();
+    console.log(images)
+    console.log(`http:/192.168.0.16:5000${images[0].url}`)
+    setImages(prevImages => [...prevImages, ...images]);
+    setStart(prevStart => prevStart + 2);
+    } catch(e) {
+      console.log("were getting an error", e)
+    }
+  }
+
+  useEffect(() => {
+      getImages();
+  }, []);
+
 
   const handleCam = (direction) => {
     fetch(`http://192.168.0.16:3000/move-${direction}`)
@@ -82,16 +103,16 @@ export default function App() {
       {/* implement record later. (Possibly record to hdd, but seperate power from data pin
           so that raspberry pi can handle it.)  */}
           <Button title='Lights' onPress={handleLights}></Button>
-          <View style={{marginBottom: 50}} />
+          <View style={{marginBottom: 5}} />
 
           <Button title='Record'></Button>
-          <View style={{marginBottom: 50}} />
+          <View style={{marginBottom: 5}} />
 
           <Button title='Move Cam Left' onPress={()=>{handleCam('left')}}></Button>
-          <View style={{marginBottom: 50}} />
+          <View style={{marginBottom: 5}} />
 
           <Button title='Move Cam Right' onPress={()=>{handleCam('right')}}></Button>
-          <View style={{marginBottom: 50}} />
+          <View style={{marginBottom: 5}} />
 
           <Button title="Show Picker" onPress={() => setShow(true)} />
       <Modal visible={show} onRequestClose={() => setShow(false)}>
@@ -115,6 +136,10 @@ export default function App() {
         </Picker>
         <Button title="Done" onPress={() => setShow(false)} />
       </Modal>
+      
+      {images.map((item, index) => (
+        <Image key={index} source={{uri: `http:/192.168.0.16:5000${item.url}`}}  style= {{ width:100, height: 100}}/>
+      ))}
 
       <StatusBar style="auto" />
     </View>

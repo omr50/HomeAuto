@@ -1,13 +1,28 @@
 # url = "rtsp://user:password@192.168.0.13:554/live/ch1"
-
+from flask import Flask, jsonify
+from threading import Thread
+from flask_cors import CORS
 import cv2
 import numpy as np
 import threading
 import queue
 import os
 
+
+app = Flask(__name__, static_folder='pictures', static_url_path='/pictures')
+cors = CORS(app, resources={r"/*": {"origins": "*"}})
+
 # Create a queue to hold frames
 frame_queue = queue.Queue(maxsize=10)
+
+@app.route('/get-images/<int:start>/<int:amount>')
+def get_images(start, amount):
+    images = os.listdir('pictures/')
+    images.sort(key=lambda img: os.path.getmtime(f'pictures/{img}'))
+    # Consider the images are sorted in the order you want them to be sent
+    images = images[start:start+amount]
+    image_urls = [{'url': f'/pictures/{image}'} for image in images]
+    return jsonify(image_urls)
 
 
 def worker():
@@ -79,20 +94,26 @@ threading.Thread(target=worker, daemon=True).start()
 url = "rtsp://user:password@192.168.0.13:554/live/ch1"
 cap = cv2.VideoCapture(url)
 
-while True:
-    ret, frame = cap.read()
-    if frame is not None:
-        # Put the frame on the queue for the worker to process
-        if not frame_queue.full():
-            frame_queue.put(frame)
-        cv2.imshow('cam', frame)
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
+def start_flask_app():
+    app.run(host='0.0.0.0')
 
-cap.release()
-cv2.destroyAllWindows()
+def start_camera():
+    while True:
+        ret, frame = cap.read()
+        if frame is not None:
+            # Put the frame on the queue for the worker to process
+            if not frame_queue.full():
+               frame_queue.put(frame)
+            cv2.imshow('cam', frame)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
 
-
+if __name__ == '__main__':
+    # Starting the Flask server in a new thread
+    Thread(target=start_flask_app).start()
+    
+    # Starting the camera feed processing in the main thread
+    start_camera()
 
 
 # from flask import Flask, Response, render_template
