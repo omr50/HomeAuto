@@ -25,6 +25,19 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      [
+        "react-native-vlc-media-player",
+        {
+          "ios": {
+            "includeVLCKit": false
+          },
+          "android": {
+            "legacyJetifier": false
+          }
+        }
+      ]
+    ]
   }
 }

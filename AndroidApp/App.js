@@ -3,6 +3,7 @@ import { Video } from 'expo-av';
 import { StatusBar, Text, View, Button, Dimensions, Platform, Modal, FlatList, Image } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import * as ScreenOrientation from 'expo-screen-orientation';
+import {VLCPlayer, VlCPlayerView} from 'react-native-vlc-media-player';
 // import {ScreenOrientation} from 'expo-screen-orientation'
 
 export default function App() {
@@ -84,7 +85,7 @@ export default function App() {
     <View>
       <Text>Camera 1 "Later change to User defined Cam Name"</Text>
 
-      <Video
+      {/* <Video
           key={videoKey} // Adding key to force refresh
           ref={videoRef}
           source={{ uri: 'http://192.168.0.16:3000/videos/ipcam/index.m3u8' }}
@@ -96,8 +97,27 @@ export default function App() {
           onFullscreenUpdate={setOrientation}
           useNativeControls
           style={{width: Dimensions.get('window').width, height: 200, marginLeft:'auto', marginRight:'auto' }}
+      /> */}
+      <VLCPlayer
+        autoplay={true}
+        url="rtsp://user:password@192.168.0.13:554/live/ch1"
+        onBuffering={(event) => {
+          console.log('Buffering: ' + event);
+        }}
+        onError={(error) => {
+          console.log('Error: ' + error);
+        }}
+        onOpen={(event) => {
+          console.log('Stream open: ' + event);
+        }}
+        onProgress={(progress) => {
+          console.log('Progress: ' + progress);
+        }}
+        onEnd={(event) => {
+          console.log('End: ' + event);
+        }}
+        style={{ width: '100%', height: 200 }} // Or use your desired dimensions
       />
-
       <Button title='Refresh Stream' onPress={handleClick}></Button>
 
       {/* implement record later. (Possibly record to hdd, but seperate power from data pin
