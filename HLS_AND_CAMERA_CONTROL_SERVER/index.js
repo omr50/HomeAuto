@@ -10,6 +10,10 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
+// REMOVED OLD HLS SERVER
+// This server will have
+// camera controls too.
+
 // test zoom later.
 // move to files based on category.
 // camera motion in its own folder.
