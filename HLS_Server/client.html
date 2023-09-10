@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>HLS Player</title>
+</head>
+
+<body>
+    <video id="video" width="500" height="500" autoplay controls="false"></video>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <script>
+        const video = document.getElementById('video');
+        const videoSrc = '/videos/ipcam/index.m3u8';
+        
+        function refreshVideo() {
+          const xhr = new XMLHttpRequest();
+          xhr.open('GET', 'videos/ipcam/index.m3u8', true);
+
+          xhr.onreadystatechange = function() {
+          if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+              if (Hls.isSupported()) {
+                const hls = new Hls();
+
+                hls.loadSource(videoSrc);
+                hls.attachMedia(video);
+                hls.on(Hls.Events.MANIFEST_PARSED, () => {
+                    video.play();
+                });
+                } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                video.src = videoSrc;
+                video.addEventListener('loadedmetadata', () => {
+                    video.play();
+                });
+            }
+              clearInterval(refreshInterval);
+            } else {
+              // Index.m3u8 file does not exist, keep refreshing the video
+              video.src = ''; // Clear the video source
+              video.load();
+              refreshInterval = setInterval(refreshVideo, 5000);
+            }
+            }
+          };
+        xhr.send();
+        }
+
+        refreshVideo()
+
+    </script>
+</body>
+
+</html>
