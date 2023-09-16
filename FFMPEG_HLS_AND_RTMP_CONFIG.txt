@@ -1,0 +1,22 @@
+# HLS
+
+ffmpeg -rtsp_transport tcp        -i rtsp://user:password@192.168.0.13:554/live/ch1        -c:v libx264        -preset ultrafast        -tune zerolatency        -g 30        -c:a aac        -strict experimental        -threads 4        -profile:v baseline        -hls_time 1        -hls_list_size 3        -hls_wrap 3        -start_number 1        /Videos/playlist.m3u8
+
+
+# RTMP
+
+# 15 / 17 second delay (KINDA SLOW)
+
+ffmpeg -rtsp_transport tcp -i rtsp://user:password@192.168.0.13:554/live/ch1 -vcodec copy -acodec copy -f flv rtmp://127.0.0.1/live/mystream
+
+# AGAIN 15 / 17 second delay (KINDA SLOW)
+
+ffmpeg -rtsp_transport tcp -i rtsp://user:password@192.168.0.13:554/live/ch1 -vcodec copy -acodec copy -bufsize 500k -f flv rtmp://127.0.0.1/live/mystream
+
+
+
+
+# 5 to 6 second delay, NOT BAD
+
+ffmpeg -rtsp_transport tcp -i rtsp://user:password@192.168.0.13:554/live/ch1 -vcodec libx264 -preset ultrafast -tune zerolatency -g 30 -acodec copy -bufsize 500k -f flv rtmp://127.0.0.1/live/mystream
+
