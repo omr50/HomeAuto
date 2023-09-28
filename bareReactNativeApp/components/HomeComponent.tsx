@@ -1,10 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React, { useEffect, useState } from 'react';
@@ -30,53 +23,69 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-import HomeScreen from './components/HomeComponent';
-import CameraComponent from './components/CameraComponent';
 
 type SectionProps = PropsWithChildren<{
   title: string;
 }>;
 
-function Section({children, title}: SectionProps): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
+interface nav {
+  navigation: any;
+}
+function HomeScreen(props:nav) {
+
+React.useEffect(() => {
+  StatusBar.setBarStyle('light-content');
+  StatusBar.setBackgroundColor('red');
+}, []);
+
+const isDarkMode = useColorScheme() === 'dark';
+
+const [textWidth, setTextWidth] = useState(0);
+const [buttonWidth, setButtonWidth] = useState(0);
+
+const onTextLayout = (event: any) => {
+  const { width } = event.nativeEvent.layout;
+  setTextWidth(width);
+};
+
+const onButtonLayout = (event: any) => {
+  const { width } = event.nativeEvent.layout;
+  setButtonWidth(width);
+};
+
+const backgroundStyle = {
+  backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+};
+
+const translateX = -textWidth * 0.5;
+const translateXButton = -buttonWidth * 0.5;
+
+return (
+  <>
+  <SafeAreaView style={backgroundStyle}>
+
+        <ImageBackground source={require('../images/smart-home-img.webp')} style={{width: '100%', height: '100%'}}>
+
+
+        </ImageBackground>
+
+        {/* text absolute and button absolute */}
+
+        <Text onLayout={onTextLayout} style={[{ transform: [{ translateX: translateX }] }, styles.text]}>Home Auto</Text>
+        
+        <TouchableOpacity
+        onLayout={onButtonLayout}
+        style={ [{ transform: [{ translateX: translateXButton }] }, styles.enterButton] }
+        onPress={() => props.navigation.navigate('Camera')}
+      >
+        <Text style={{ color: 'white', fontSize: 25, fontWeight: '500' }}>Enter</Text>
+      </TouchableOpacity>
+  </SafeAreaView>
+  </>
+);
 }
 
-const Stack = createStackNavigator();
-
-function App(): JSX.Element {
-
-
-  return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Camera" component={CameraComponent} />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
-}
+export default HomeScreen;
 
 const styles = StyleSheet.create({
   sectionContainer: {
@@ -126,5 +135,3 @@ const styles = StyleSheet.create({
     left: '50%',
   }
 });
-
-export default App;
