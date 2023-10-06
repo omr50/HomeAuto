@@ -20,3 +20,5 @@ ffmpeg -rtsp_transport tcp -i rtsp://user:password@192.168.0.13:554/live/ch1 -vc
 
 ffmpeg -rtsp_transport tcp -i rtsp://user:password@192.168.0.15:554/live/ch1 -vcodec libx264 -preset ultrafast -tune zerolatency -g 30 -acodec copy -bufsize 500k -f flv rtmp://127.0.0.1/live/mystream
 
+add nohup to the front of the command and & (ampersant to back to allow it to
+run in the background).
