@@ -71,7 +71,7 @@ return (
 
         {/* text absolute and button absolute */}
 
-        <Text onLayout={onTextLayout} style={[{ transform: [{ translateX: translateX }] }, styles.text]}>Home Auto</Text>
+        {/* <Text onLayout={onTextLayout} style={[{ transform: [{ translateX: translateX }] }, styles.text]}>Home Auto</Text> */}
         
         <TouchableOpacity
         onLayout={onButtonLayout}
